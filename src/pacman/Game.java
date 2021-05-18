@@ -2,14 +2,14 @@ package pacman;
 
 import javax.swing.*;
 
-public class Main extends JFrame {
+public class Game extends JFrame {
 
-    public Main() {
+    public Game() {
         add(new Maze());
     }
 
     public static void main(String[] args) {
-        Main game = new Main();
+        Game game = new Game();
         game.setVisible(true);
         game.setTitle("Pacman");
         game.setSize(840, 960);
