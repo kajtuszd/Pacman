@@ -5,13 +5,31 @@ import java.awt.*;
 
 public class Maze extends JPanel {
 
+    private Pacman pacman;
     private final int WIDTH = 28;
     private final int HEIGHT = 31;
     private final int FIELD_SIZE = 30;
     private final int SCREEN_WIDTH = WIDTH * FIELD_SIZE;
     private final int SCREEN_HEIGHT = HEIGHT * FIELD_SIZE;
+    private static int PACMAN_SPAWN_ROW;
+    private static int PACMAN_SPAWN_COL;
 
-    private short[] screenData;
+    public Maze() {
+        countPacmanSpawnCoords();
+        pacman = new Pacman();
+    }
+
+    private void countPacmanSpawnCoords() {
+        int pacmanSpawnIndex = 0;
+        for (int i = 0; i < mazeData.length; i++) {
+            if (mazeData[i] == 5)
+                pacmanSpawnIndex = i;
+        }
+        int cols = pacmanSpawnIndex / WIDTH;
+        int rows = pacmanSpawnIndex - cols * WIDTH;
+        PACMAN_SPAWN_ROW = rows * FIELD_SIZE - 15;
+        PACMAN_SPAWN_COL = cols * FIELD_SIZE - 3;
+    }
 
     /*
     * 0 - blue wall
@@ -21,7 +39,7 @@ public class Maze extends JPanel {
     * 4 - white line
     * 5 - spawn place for Pacman
     * */
-    private final short[] mazeData = {
+    private short[] mazeData = {
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
             0, 2, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2, 0,
@@ -93,11 +111,16 @@ public class Maze extends JPanel {
         }
     }
 
+    public void spawnPacman(Graphics2D graphics) {
+        graphics.drawImage(pacman.turnRight(), PACMAN_SPAWN_ROW, PACMAN_SPAWN_COL, this);
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(Color.black);
         g2d.fillRect(0, 0, 840, 930);
         drawMaze(g2d);
+        spawnPacman(g2d);
     }
 }
