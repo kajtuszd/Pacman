@@ -12,6 +12,6 @@ public class Main extends JFrame {
         Main game = new Main();
         game.setVisible(true);
         game.setTitle("Pacman");
-        game.setSize(840, 930);
+        game.setSize(840, 960);
     }
 }
