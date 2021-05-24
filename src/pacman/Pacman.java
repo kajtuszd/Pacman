@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Pacman {
 
-    private Image up, down, left, right;
+    private Image up, down, left, right, actual;
     private final int PACMAN_WIDTH = 30;
     private final int PACMAN_HEIGHT = 30;
 
@@ -14,17 +14,26 @@ public class Pacman {
         down = new ImageIcon("media/pacman-down-resize.gif").getImage();
         left = new ImageIcon("media/pacman-left-resize.gif").getImage();
         right = new ImageIcon("media/pacman-right-resize.gif").getImage();
+        actual = right;
     }
-    public Image turnUp() {
-        return this.up;
+
+    public void turnUp() {
+        actual = this.up;
     }
-    public Image turnDown() {
-        return this.down;
+
+    public void turnDown() {
+        actual = this.down;
     }
-    public Image turnRight() {
-        return this.right;
+
+    public void turnRight() {
+        actual = this.right;
     }
-    public Image turnLeft() {
-        return this.left;
+
+    public void turnLeft() {
+        actual = this.left;
+    }
+
+    public Image getImage() {
+        return actual;
     }
 }

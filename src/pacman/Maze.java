@@ -2,6 +2,8 @@ package pacman;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Maze extends JPanel {
 
@@ -13,10 +15,20 @@ public class Maze extends JPanel {
     private final int SCREEN_HEIGHT = HEIGHT * FIELD_SIZE;
     private static int PACMAN_SPAWN_ROW;
     private static int PACMAN_SPAWN_COL;
+    private int pacmanDX;
+    private int pacmanDY;
+    private int pacmanX;
+    private int pacmanY;
 
     public Maze() {
         countPacmanSpawnCoords();
         pacman = new Pacman();
+        pacmanDX = 0;
+        pacmanDY = 0;
+        pacmanX = PACMAN_SPAWN_ROW;
+        pacmanY = PACMAN_SPAWN_COL;
+        addKeyListener(new PacmanAdapter());
+        setFocusable(true);
     }
 
     private void countPacmanSpawnCoords() {
@@ -76,12 +88,11 @@ public class Maze extends JPanel {
     public void drawMaze(Graphics2D graphics) {
         short i = 0;
         graphics.setStroke(new BasicStroke(5));
+        Color blue = new Color(10, 10, 250);
+        Color yellow = new Color(255, 179, 0);
 
         for (int x = 0; x < SCREEN_HEIGHT; x += FIELD_SIZE) {
             for (int y = 0; y < SCREEN_WIDTH; y += FIELD_SIZE) {
-
-                Color blue = new Color(10, 10, 250);
-                Color yellow = new Color(255, 179, 0);
 
                 if (mazeData[i] == 0) {
                     graphics.setColor(blue);
@@ -111,8 +122,8 @@ public class Maze extends JPanel {
         }
     }
 
-    public void spawnPacman(Graphics2D graphics) {
-        graphics.drawImage(pacman.turnRight(), PACMAN_SPAWN_ROW, PACMAN_SPAWN_COL, this);
+    public void spawnPacman(Graphics2D graphics, int row, int column) {
+        graphics.drawImage(pacman.getImage(), row, column, this);
     }
 
     public void paintComponent(Graphics g) {
@@ -121,6 +132,35 @@ public class Maze extends JPanel {
         g2d.setColor(Color.black);
         g2d.fillRect(0, 0, 840, 930);
         drawMaze(g2d);
-        spawnPacman(g2d);
+        spawnPacman(g2d, pacmanX, pacmanY);
+    }
+
+
+    class PacmanAdapter extends KeyAdapter {
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            int pressedKey = e.getKeyCode();
+            if (pressedKey == KeyEvent.VK_UP) {
+                pacmanDX = 0;
+                pacmanDY = -1;
+                pacman.turnUp();
+            }
+            if (pressedKey == KeyEvent.VK_DOWN) {
+                pacmanDX = 0;
+                pacmanDY = 1;
+                pacman.turnDown();
+            }
+            if (pressedKey == KeyEvent.VK_LEFT) {
+                pacmanDX = -1;
+                pacmanDY = 0;
+                pacman.turnLeft();
+            }
+            if (pressedKey == KeyEvent.VK_RIGHT) {
+                pacmanDX = 1;
+                pacmanDY = 0;
+                pacman.turnRight();
+            }
+        }
     }
 }
