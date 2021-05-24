@@ -13,34 +13,12 @@ public class Maze extends JPanel {
     private final int FIELD_SIZE = 30;
     private final int SCREEN_WIDTH = WIDTH * FIELD_SIZE;
     private final int SCREEN_HEIGHT = HEIGHT * FIELD_SIZE;
-    private static int PACMAN_SPAWN_ROW;
-    private static int PACMAN_SPAWN_COL;
-    private int pacmanDX;
-    private int pacmanDY;
-    private int pacmanX;
-    private int pacmanY;
+
 
     public Maze() {
-        countPacmanSpawnCoords();
-        pacman = new Pacman();
-        pacmanDX = 0;
-        pacmanDY = 0;
-        pacmanX = PACMAN_SPAWN_ROW;
-        pacmanY = PACMAN_SPAWN_COL;
+        pacman = new Pacman(mazeData, FIELD_SIZE, WIDTH);
         addKeyListener(new PacmanAdapter());
         setFocusable(true);
-    }
-
-    private void countPacmanSpawnCoords() {
-        int pacmanSpawnIndex = 0;
-        for (int i = 0; i < mazeData.length; i++) {
-            if (mazeData[i] == 5)
-                pacmanSpawnIndex = i;
-        }
-        int cols = pacmanSpawnIndex / WIDTH;
-        int rows = pacmanSpawnIndex - cols * WIDTH;
-        PACMAN_SPAWN_ROW = rows * FIELD_SIZE - 15;
-        PACMAN_SPAWN_COL = cols * FIELD_SIZE - 3;
     }
 
     /*
@@ -132,7 +110,7 @@ public class Maze extends JPanel {
         g2d.setColor(Color.black);
         g2d.fillRect(0, 0, 840, 930);
         drawMaze(g2d);
-        spawnPacman(g2d, pacmanX, pacmanY);
+        spawnPacman(g2d, pacman.actualX, pacman.actualY);
     }
 
 
@@ -142,23 +120,19 @@ public class Maze extends JPanel {
         public void keyPressed(KeyEvent e) {
             int pressedKey = e.getKeyCode();
             if (pressedKey == KeyEvent.VK_UP) {
-                pacmanDX = 0;
-                pacmanDY = -1;
+                pacman.setMoveVector(0, 1);
                 pacman.turnUp();
             }
             if (pressedKey == KeyEvent.VK_DOWN) {
-                pacmanDX = 0;
-                pacmanDY = 1;
+                pacman.setMoveVector(0, 1);
                 pacman.turnDown();
             }
             if (pressedKey == KeyEvent.VK_LEFT) {
-                pacmanDX = -1;
-                pacmanDY = 0;
+                pacman.setMoveVector(-1, 0);
                 pacman.turnLeft();
             }
             if (pressedKey == KeyEvent.VK_RIGHT) {
-                pacmanDX = 1;
-                pacmanDY = 0;
+                pacman.setMoveVector(1, 0);
                 pacman.turnRight();
             }
         }
