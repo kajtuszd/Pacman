@@ -13,6 +13,7 @@ public class Maze extends JPanel {
     private final int FIELD_SIZE = 30;
     private final int SCREEN_WIDTH = WIDTH * FIELD_SIZE;
     private final int SCREEN_HEIGHT = HEIGHT * FIELD_SIZE;
+    public static int score = 0;
 
     public int[] actualMoveVector = {0, 0};
 
@@ -105,6 +106,13 @@ public class Maze extends JPanel {
         graphics.drawImage(pacman.getImage(), row, column, this);
     }
 
+    public void eatFootIfPossible() {
+        if (mazeData[pacman.arrayPlace] == 2){
+            mazeData[pacman.arrayPlace] = 1;
+            score += 1;
+        }
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
@@ -112,7 +120,9 @@ public class Maze extends JPanel {
         g2d.fillRect(0, 0, 840, 930);
         drawMaze(g2d);
         pacman.makeMove(actualMoveVector);
+        eatFootIfPossible();
         spawnPacman(g2d, pacman.actualX, pacman.actualY);
+
     }
 
     class PacmanAdapter extends KeyAdapter {

@@ -13,6 +13,7 @@ public class Pacman {
     private int PACMAN_SPEED = 5;
     private int OFFSET_X = 15;
     private int OFFSET_Y = 3;
+    public int arrayPlace;
 
     public Pacman(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         up = new ImageIcon("media/pacman-up-resize.gif").getImage();
@@ -52,6 +53,9 @@ public class Pacman {
     private void updateCoordinates() {
         actualX += pacmanDX * PACMAN_SPEED;
         actualY += pacmanDY * PACMAN_SPEED;
+        int positionInMazeX = actualX / 30;
+        int positionInMazeY = actualY / 30 + 1;
+        arrayPlace = positionInMazeY*28 + positionInMazeX;
     }
 
     private Boolean isHorizontalMoveValid() {
