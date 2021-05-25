@@ -14,6 +14,7 @@ public class Maze extends JPanel {
     private final int SCREEN_WIDTH = WIDTH * FIELD_SIZE;
     private final int SCREEN_HEIGHT = HEIGHT * FIELD_SIZE;
     public static int score = 0;
+    private final Font scoreFont = new Font("Arial", Font.BOLD, 18);
 
     public int[] actualMoveVector = {0, 0};
 
@@ -21,6 +22,8 @@ public class Maze extends JPanel {
         pacman = new Pacman(mazeData, FIELD_SIZE, WIDTH);
         addKeyListener(new PacmanAdapter());
         setFocusable(true);
+        setBackground(Color.black);
+
     }
 
     /*
@@ -116,13 +119,14 @@ public class Maze extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(Color.black);
-        g2d.fillRect(0, 0, 840, 930);
         drawMaze(g2d);
         pacman.makeMove(actualMoveVector);
         eatFootIfPossible();
         spawnPacman(g2d, pacman.actualX, pacman.actualY);
-
+        String result = "Score: " + score;
+        g2d.setColor(Color.yellow);
+        g2d.setFont(scoreFont);
+        g2d.drawString(result, 10, 950);
     }
 
     class PacmanAdapter extends KeyAdapter {

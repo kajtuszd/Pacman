@@ -1,6 +1,7 @@
 package pacman;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class Game extends JFrame {
 
@@ -12,6 +13,6 @@ public class Game extends JFrame {
         Game game = new Game();
         game.setVisible(true);
         game.setTitle("Pacman");
-        game.setSize(840, 960);
+        game.setSize(840, 1000);
     }
 }
