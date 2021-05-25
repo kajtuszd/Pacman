@@ -14,6 +14,7 @@ public class Maze extends JPanel {
     private final int SCREEN_WIDTH = WIDTH * FIELD_SIZE;
     private final int SCREEN_HEIGHT = HEIGHT * FIELD_SIZE;
 
+    public int[] actualMoveVector = {0, 0};
 
     public Maze() {
         pacman = new Pacman(mazeData, FIELD_SIZE, WIDTH);
@@ -110,9 +111,9 @@ public class Maze extends JPanel {
         g2d.setColor(Color.black);
         g2d.fillRect(0, 0, 840, 930);
         drawMaze(g2d);
+        pacman.makeMove(actualMoveVector);
         spawnPacman(g2d, pacman.actualX, pacman.actualY);
     }
-
 
     class PacmanAdapter extends KeyAdapter {
 
@@ -120,20 +121,16 @@ public class Maze extends JPanel {
         public void keyPressed(KeyEvent e) {
             int pressedKey = e.getKeyCode();
             if (pressedKey == KeyEvent.VK_UP) {
-                pacman.setMoveVector(0, 1);
-                pacman.turnUp();
+                actualMoveVector = new int[] {0, -1};
             }
             if (pressedKey == KeyEvent.VK_DOWN) {
-                pacman.setMoveVector(0, 1);
-                pacman.turnDown();
+                actualMoveVector = new int[] {0, 1};
             }
             if (pressedKey == KeyEvent.VK_LEFT) {
-                pacman.setMoveVector(-1, 0);
-                pacman.turnLeft();
+                actualMoveVector = new int[] {-1, 0};
             }
             if (pressedKey == KeyEvent.VK_RIGHT) {
-                pacman.setMoveVector(1, 0);
-                pacman.turnRight();
+                actualMoveVector = new int[] {1, 0};
             }
         }
     }
