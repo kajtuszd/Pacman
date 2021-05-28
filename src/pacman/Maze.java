@@ -105,7 +105,7 @@ public class Maze extends JPanel {
         }
     }
 
-    public void spawnPacman(Graphics2D graphics, int row, int column) {
+    public void drawPacman(Graphics2D graphics, int row, int column) {
         graphics.drawImage(pacman.getImage(), row, column, this);
     }
 
@@ -116,17 +116,21 @@ public class Maze extends JPanel {
         }
     }
 
+    private void drawScore(Graphics g) {
+        String result = "Score: " + score;
+        g.setColor(Color.yellow);
+        g.setFont(scoreFont);
+        g.drawString(result, 10, 950);
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawMaze(g2d);
-        pacman.makeMove(actualMoveVector);
+        pacman.makeMove(actualMoveVector, mazeData);
         eatFootIfPossible();
-        spawnPacman(g2d, pacman.actualX, pacman.actualY);
-        String result = "Score: " + score;
-        g2d.setColor(Color.yellow);
-        g2d.setFont(scoreFont);
-        g2d.drawString(result, 10, 950);
+        drawPacman(g2d, pacman.actualX, pacman.actualY);
+        drawScore(g2d);
     }
 
     class PacmanAdapter extends KeyAdapter {
