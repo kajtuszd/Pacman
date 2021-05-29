@@ -80,6 +80,18 @@ public class Pacman {
         }
     }
 
+    private void goThroughTunnelAndChangeSide() {
+        if (actualX / 30 == 27) {
+            actualX -= 26 * 30;
+        }
+        if (actualX / 30 == 0) {
+            actualX += 26 * 30;
+        }
+        int positionInMazeX = ( actualX )/ 30;
+        int positionInMazeY = ( actualY )/ 30;
+        arrayPlace = positionInMazeY * 28 + positionInMazeX;
+    }
+
     private Boolean canMoveUp(short[] mazeData) {
         return arrayPlace - 28 > 0 && mazeData[arrayPlace - 28] != 0;
     }
@@ -141,6 +153,7 @@ public class Pacman {
                 turnRight();
             }
         }
+        goThroughTunnelAndChangeSide();
         updateCoordinates();
         stopPacmanIfMeetsWall(mazeData);
     }
