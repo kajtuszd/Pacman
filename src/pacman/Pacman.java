@@ -15,8 +15,6 @@ public class Pacman {
     private int pacmanDX;
     private int pacmanDY;
     private final int PACMAN_SPEED = 5;
-//    private int OFFSET_X = 15;
-//    private int OFFSET_Y = 3;
     public int arrayPlace;
 
     public Pacman(short[] mazeData, int FIELD_SIZE, int WIDTH) {
@@ -124,8 +122,8 @@ public class Pacman {
         }
         int cols = pacmanSpawnIndex / WIDTH;
         int rows = pacmanSpawnIndex - cols * WIDTH;
-        actualX = rows * FIELD_SIZE;// - OFFSET_X;
-        actualY = cols * FIELD_SIZE;//- OFFSET_Y;
+        actualX = rows * FIELD_SIZE;
+        actualY = cols * FIELD_SIZE;
     }
 
     public void makeMove(int[] actualMoveVector, short[] mazeData) {
