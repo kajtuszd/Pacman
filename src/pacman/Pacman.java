@@ -65,11 +65,13 @@ public class Pacman {
     private void stopPacmanIfMeetsWall(short[] mazeData) {
         int copyOfActualX = actualX + pacmanDX * PACMAN_SPEED;
         int copyOfActualY = actualY + pacmanDY * PACMAN_SPEED;
-        if ((pacmanDX == 0 && pacmanDY == 1) || (pacmanDX == 1 && pacmanDY == 0)) {
-            copyOfActualX += 30;
-            copyOfActualY += 30;
+        /* moving down and right forces 30-60px addition in order to watch for the next block */
+        if (pacmanDX == 1 && pacmanDY == 0) {
+            copyOfActualX = actualX + 30;
         }
-
+        if (pacmanDX == 0 && pacmanDY == 1) {
+            copyOfActualY = actualY + 30;
+        }
         int positionInMazeX = (copyOfActualX )/ 30;
         int positionInMazeY = (copyOfActualY )/ 30;
         int copyOfArrayPlace = positionInMazeY * 28 + positionInMazeX;
@@ -114,37 +116,32 @@ public class Pacman {
         actualY = cols * FIELD_SIZE;//- OFFSET_Y;
     }
 
-    public void makeMove(int[] actualMoveVector, short[] mazeData)
-    {
-        stopPacmanIfMeetsWall(mazeData);
-        if (actualMoveVector[0] == 0 && actualMoveVector[1] == -1)
-        {
-            if (isHorizontalMoveValid() && canMoveUp(mazeData)){
+    public void makeMove(int[] actualMoveVector, short[] mazeData) {
+        if (actualMoveVector[0] == 0 && actualMoveVector[1] == -1) {
+            if (isHorizontalMoveValid() && canMoveUp(mazeData)) {
                 setMoveVector(0, -1);
                 turnUp();
             }
         }
-        else if (actualMoveVector[0] == 0 && actualMoveVector[1] == 1)
-        {
-            if (isHorizontalMoveValid() && canMoveDown(mazeData)){
+        else if (actualMoveVector[0] == 0 && actualMoveVector[1] == 1) {
+            if (isHorizontalMoveValid() && canMoveDown(mazeData)) {
                 setMoveVector(0, 1);
                 turnDown();
             }
         }
-        else if (actualMoveVector[0] == -1 && actualMoveVector[1] == 0)
-        {
-            if (isVerticalMoveValid() && canMoveLeft(mazeData)){
+        else if (actualMoveVector[0] == -1 && actualMoveVector[1] == 0) {
+            if (isVerticalMoveValid() && canMoveLeft(mazeData)) {
                 setMoveVector(-1, 0);
                 turnLeft();
             }
         }
-        else if (actualMoveVector[0] == 1 && actualMoveVector[1] == 0)
-        {
-            if (isVerticalMoveValid() && canMoveRight(mazeData)){
+        else if (actualMoveVector[0] == 1 && actualMoveVector[1] == 0) {
+            if (isVerticalMoveValid() && canMoveRight(mazeData)) {
                 setMoveVector(1, 0);
                 turnRight();
             }
         }
         updateCoordinates();
+        stopPacmanIfMeetsWall(mazeData);
     }
 }
