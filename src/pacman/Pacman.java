@@ -18,10 +18,10 @@ public class Pacman {
     public int arrayPlace;
 
     public Pacman(short[] mazeData, int FIELD_SIZE, int WIDTH) {
-        up = new ImageIcon("media/pacman-up-resize.gif").getImage();
-        down = new ImageIcon("media/pacman-down-resize.gif").getImage();
-        left = new ImageIcon("media/pacman-left-resize.gif").getImage();
-        right = new ImageIcon("media/pacman-right-resize.gif").getImage();
+        up = new ImageIcon("media/pacman-up.gif").getImage();
+        down = new ImageIcon("media/pacman-down.gif").getImage();
+        left = new ImageIcon("media/pacman-left.gif").getImage();
+        right = new ImageIcon("media/pacman-right.gif").getImage();
         actual = right;
         setMoveVector(0, 0);
         countPacmanSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
