@@ -5,10 +5,10 @@ import java.awt.*;
 
 public class Pacman {
 
-    private final Image up;
-    private final Image down;
-    private final Image left;
-    private final Image right;
+    private Image up;
+    private Image down;
+    private Image left;
+    private Image right;
     private Image actual;
     public int actualX;
     public int actualY;
@@ -18,13 +18,17 @@ public class Pacman {
     public int arrayPlace;
 
     public Pacman(short[] mazeData, int FIELD_SIZE, int WIDTH) {
+        loadImages();
+        setMoveVector(0, 0);
+        countPacmanSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
+    }
+
+    private void loadImages() {
         up = new ImageIcon("media/pacman-up.gif").getImage();
         down = new ImageIcon("media/pacman-down.gif").getImage();
         left = new ImageIcon("media/pacman-left.gif").getImage();
         right = new ImageIcon("media/pacman-right.gif").getImage();
         actual = right;
-        setMoveVector(0, 0);
-        countPacmanSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
     }
 
     private void turnUp() {
