@@ -1,8 +1,9 @@
 package pacman;
 
 import javax.swing.*;
+import java.awt.*;
 
-public class RedGhost extends Ghost implements GameCharacter{
+public class RedGhost extends Character {
 
     private final int SPAWN_PLACE = 6;
 
@@ -12,7 +13,7 @@ public class RedGhost extends Ghost implements GameCharacter{
     }
 
     @Override
-    public void loadImages() {
+    protected void loadImages() {
         up = new ImageIcon("media/ru.gif").getImage();
         down = new ImageIcon("media/rd.gif").getImage();
         left = new ImageIcon("media/rl.gif").getImage();
@@ -31,5 +32,13 @@ public class RedGhost extends Ghost implements GameCharacter{
         int rows = spawnIndex - cols * WIDTH;
         actualX = rows * FIELD_SIZE;
         actualY = cols * FIELD_SIZE;
+    }
+
+    public static class AI extends Thread {
+        @Override
+        public void run() {
+            super.run();
+            System.out.println("Hello from red");
+        }
     }
 }

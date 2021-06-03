@@ -3,27 +3,18 @@ package pacman;
 import javax.swing.*;
 import java.awt.*;
 
-public class Pacman {
+public class Pacman extends Character {
 
-    private Image up;
-    private Image down;
-    private Image left;
-    private Image right;
-    private Image actual;
-    public int actualX;
-    public int actualY;
-    private int pacmanDX;
-    private int pacmanDY;
     private final int PACMAN_SPEED = 5;
-    public int arrayPlace;
 
     public Pacman(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         loadImages();
         setMoveVector(0, 0);
-        countPacmanSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
+        countSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
     }
 
-    private void loadImages() {
+    @Override
+    protected void loadImages() {
         up = new ImageIcon("media/pacman-up.gif").getImage();
         down = new ImageIcon("media/pacman-down.gif").getImage();
         left = new ImageIcon("media/pacman-left.gif").getImage();
@@ -31,47 +22,14 @@ public class Pacman {
         actual = right;
     }
 
-    private void turnUp() {
-        actual = this.up;
-    }
-
-    private void turnDown() {
-        actual = this.down;
-    }
-
-    private void turnRight() {
-        actual = this.right;
-    }
-
-    private void turnLeft() {
-        actual = this.left;
-    }
-
-    public Image getImage() {
-        return actual;
-    }
-
-    private void setMoveVector(int offsetX, int offsetY) {
-        pacmanDX = offsetX;
-        pacmanDY = offsetY;
-    }
-
-    private void updateCoordinates() {
-        actualX += pacmanDX * PACMAN_SPEED;
-        actualY += pacmanDY * PACMAN_SPEED;
-        int positionInMazeX = ( actualX )/ 30;
-        int positionInMazeY = ( actualY )/ 30;
-        arrayPlace = positionInMazeY * 28 + positionInMazeX;
-    }
-
     private void stopPacmanIfMeetsWall(short[] mazeData) {
-        int copyOfActualX = actualX + pacmanDX * PACMAN_SPEED;
-        int copyOfActualY = actualY + pacmanDY * PACMAN_SPEED;
+        int copyOfActualX = actualX + moveDX * PACMAN_SPEED;
+        int copyOfActualY = actualY + moveDY * PACMAN_SPEED;
         /* moving down and right forces 30-60px addition in order to watch for the next block */
-        if (pacmanDX == 1 && pacmanDY == 0) {
+        if (moveDX == 1 && moveDY == 0) {
             copyOfActualX = actualX + 30;
         }
-        if (pacmanDX == 0 && pacmanDY == 1) {
+        if (moveDX == 0 && moveDY == 1) {
             copyOfActualY = actualY + 30;
         }
         int positionInMazeX = (copyOfActualX )/ 30;
@@ -94,31 +52,8 @@ public class Pacman {
         arrayPlace = positionInMazeY * 28 + positionInMazeX;
     }
 
-    private Boolean canMoveUp(short[] mazeData) {
-        return arrayPlace - 28 > 0 && mazeData[arrayPlace - 28] != 0;
-    }
-
-    private Boolean canMoveDown(short[] mazeData) {
-        return arrayPlace + 28 > 0 && mazeData[arrayPlace + 28] != 0 && mazeData[arrayPlace + 28] != 4;
-    }
-
-    private Boolean canMoveLeft(short[] mazeData) {
-        return arrayPlace - 1 > 0 && mazeData[arrayPlace - 1] != 0;
-    }
-
-    private Boolean canMoveRight(short[] mazeData) {
-        return arrayPlace + 1 > 0 && mazeData[arrayPlace + 1] != 0;
-    }
-
-    private Boolean isHorizontalMoveValid() {
-        return actualX % 30 == 0;
-    }
-
-    private Boolean isVerticalMoveValid() {
-        return actualY % 30 == 0;
-    }
-
-    private void countPacmanSpawnCoordinates(short[] mazeData, int FIELD_SIZE, int WIDTH) {
+    @Override
+    protected void countSpawnCoordinates(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         int pacmanSpawnIndex = 0;
         for (int i = 0; i < mazeData.length; i++) {
             if (mazeData[i] == 5)

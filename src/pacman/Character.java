@@ -2,11 +2,11 @@ package pacman;
 
 import java.awt.*;
 
-abstract class Ghost {
+abstract class Character {
     public int actualX;
     public int actualY;
-    private int ghostDX;
-    private int ghostDY;
+    protected int moveDX;
+    protected int moveDY;
     protected Image up;
     protected Image down;
     protected Image left;
@@ -15,14 +15,17 @@ abstract class Ghost {
     private final int GHOST_SPEED = 5;
     public int arrayPlace;
 
+    abstract void loadImages();
+    abstract void countSpawnCoordinates(short[] mazeData, int FIELD_SIZE, int WIDTH);
+
     protected void setMoveVector(int offsetX, int offsetY) {
-        ghostDX = offsetX;
-        ghostDY = offsetY;
+        moveDX = offsetX;
+        moveDY = offsetY;
     }
 
     protected void updateCoordinates() {
-        actualX += ghostDX * GHOST_SPEED;
-        actualY += ghostDY * GHOST_SPEED;
+        actualX += moveDX * GHOST_SPEED;
+        actualY += moveDY * GHOST_SPEED;
         int positionInMazeX = ( actualX )/ 30;
         int positionInMazeY = ( actualY )/ 30;
         arrayPlace = positionInMazeY * 28 + positionInMazeX;
@@ -50,6 +53,22 @@ abstract class Ghost {
 
     protected Boolean isVerticalMoveValid() {
         return actualY % 30 == 0;
+    }
+
+    protected void turnUp() {
+        actual = this.up;
+    }
+
+    protected void turnDown() {
+        actual = this.down;
+    }
+
+    protected void turnRight() {
+        actual = this.right;
+    }
+
+    protected void turnLeft() {
+        actual = this.left;
     }
 
     public Image getImage() {

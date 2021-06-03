@@ -19,7 +19,6 @@ public class Maze extends JPanel {
     private final int SCREEN_HEIGHT = HEIGHT * FIELD_SIZE;
     public static int score = 0;
     private final Font scoreFont = new Font("Arial", Font.BOLD, 18);
-
     public int[] actualMoveVector = {0, 0};
 
     public Maze() {
@@ -143,6 +142,14 @@ public class Maze extends JPanel {
         pacman.makeMove(actualMoveVector, mazeData);
         eatFootIfPossible();
         drawPacman(g2d, pacman.actualX, pacman.actualY);
+        BlueGhost.AI blueAI = new BlueGhost.AI();
+        RedGhost.AI redAI = new RedGhost.AI();
+        PinkGhost.AI pinkAI = new PinkGhost.AI();
+        OrangeGhost.AI orangeAI = new OrangeGhost.AI();
+        blueAI.start();
+        pinkAI.start();
+        orangeAI.start();
+        redAI.start();
         drawGhosts(g2d);
         drawScore(g2d);
     }
