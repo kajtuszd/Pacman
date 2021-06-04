@@ -12,10 +12,9 @@ abstract class Character {
     protected Image left;
     protected Image right;
     protected Image actual;
-    private final int GHOST_SPEED = 5;
+    private final int CHARACTER_SPEED = 5;
     public int arrayPlace;
-    public Boolean isInHouse = true;
-    private Boolean isLeftSide = true;
+
 
     abstract void loadImages();
     abstract void countSpawnCoordinates(short[] mazeData, int FIELD_SIZE, int WIDTH);
@@ -26,8 +25,8 @@ abstract class Character {
     }
 
     protected void updateCoordinates() {
-        actualX += moveDX * GHOST_SPEED;
-        actualY += moveDY * GHOST_SPEED;
+        actualX += moveDX * CHARACTER_SPEED;
+        actualY += moveDY * CHARACTER_SPEED;
         int positionInMazeX = ( actualX )/ 30;
         int positionInMazeY = ( actualY )/ 30;
         arrayPlace = positionInMazeY * 28 + positionInMazeX;
@@ -83,65 +82,5 @@ abstract class Character {
         System.out.println("Down " + mazeData[arrayPlace + 28]);
         System.out.println("Left " + mazeData[arrayPlace - 1]);
         System.out.println("Right " + mazeData[arrayPlace + 1]);
-    }
-
-    public void goUp(short[] mazeData) {
-        if (isHorizontalMoveValid() && canMoveUp(mazeData)) {
-            setMoveVector(0, -1);
-            turnUp();
-            System.out.println("Going up");
-        }
-        updateCoordinates();
-    }
-
-    public void goDown(short[] mazeData) {
-        if (isHorizontalMoveValid() && canMoveDown(mazeData)) {
-            setMoveVector(0, 1);
-            System.out.println("Going down");
-            turnDown();
-        }
-        updateCoordinates();
-    }
-
-    public void goLeft(short[] mazeData) {
-        if (isVerticalMoveValid() && canMoveLeft(mazeData)) {
-            setMoveVector(-1, 0);
-            System.out.println("Going left");
-            turnLeft();
-        }
-        updateCoordinates();
-    }
-
-    public void goRight(short[] mazeData) {
-        if (isVerticalMoveValid() && canMoveRight(mazeData)) {
-            setMoveVector(1, 0);
-            System.out.println("Going right");
-            turnRight();
-        }
-        updateCoordinates();
-    }
-
-    private Boolean checkIfGhostCrossedWhiteLine(short[] mazeData) {
-        return (mazeData[arrayPlace + 28] == 4 && actualY % 30 == 0);
-    }
-
-    public void goOutOfHouse(short[] mazeData) {
-        if (checkIfGhostCrossedWhiteLine(mazeData)) {
-            isInHouse = false;
-            return;
-        }
-        if (mazeData[arrayPlace - 28] != 0) {
-            goUp(mazeData);
-            return;
-        }
-        if (mazeData[arrayPlace + 1] != 0 && isLeftSide) {
-            goRight(mazeData);
-        }
-        else {
-            isLeftSide = false;
-        }
-        if (mazeData[arrayPlace - 1] != 0 && !isLeftSide) {
-            goLeft(mazeData);
-        }
     }
 }

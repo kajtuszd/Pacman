@@ -3,7 +3,7 @@ package pacman;
 import javax.swing.*;
 import java.awt.*;
 
-public class OrangeGhost extends Character {
+public class OrangeGhost extends Ghost {
 
     private final int SPAWN_PLACE = 8;
 
