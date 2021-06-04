@@ -10,6 +10,8 @@ public class RedGhost extends Character {
     public RedGhost(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         loadImages();
         countSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
+        setMoveVector(0, 0);
+        updateCoordinates();
     }
 
     @Override
@@ -38,7 +40,7 @@ public class RedGhost extends Character {
         @Override
         public void run() {
             super.run();
-            System.out.println("Hello from red");
+//            System.out.println("Hello from red");
         }
     }
 }

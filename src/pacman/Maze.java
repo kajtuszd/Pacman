@@ -150,6 +150,26 @@ public class Maze extends JPanel {
         pinkAI.start();
         orangeAI.start();
         redAI.start();
+        try {
+            blueAI.join();
+            pinkAI.join();
+            orangeAI.join();
+            redAI.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (redGhost.isInHouse) {
+            redGhost.goOutOfHouse(mazeData);
+        }
+        if (blueGhost.isInHouse) {
+            blueGhost.goOutOfHouse(mazeData);
+        }
+        if(orangeGhost.isInHouse) {
+            orangeGhost.goOutOfHouse(mazeData);
+        }
+        if(pinkGhost.isInHouse) {
+            pinkGhost.goOutOfHouse(mazeData);
+        }
         drawGhosts(g2d);
         drawScore(g2d);
     }

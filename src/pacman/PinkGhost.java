@@ -10,6 +10,8 @@ public class PinkGhost extends Character {
     public PinkGhost(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         loadImages();
         countSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
+        setMoveVector(0, 0);
+        updateCoordinates();
     }
 
     @Override
@@ -38,7 +40,7 @@ public class PinkGhost extends Character {
         @Override
         public void run() {
             super.run();
-            System.out.println("Hello from pink");
+//            System.out.println("Hello from pink");
         }
     }
 }
