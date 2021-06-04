@@ -135,6 +135,15 @@ public class Maze extends JPanel {
         g.drawString(result, 10, 950);
     }
 
+    private void drawLives(Graphics g) {
+        int row = 750;
+        int column = 930;
+        for (int live = 1; live <= pacman.getNumberOfLives(); live++) {
+            g.drawImage(pacman.getPacmanImage(), row, column, this);
+            row += 30;
+        }
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
@@ -172,6 +181,7 @@ public class Maze extends JPanel {
         }
         drawGhosts(g2d);
         drawScore(g2d);
+        drawLives(g2d);
     }
 
     class PacmanAdapter extends KeyAdapter {

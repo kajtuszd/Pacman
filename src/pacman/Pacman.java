@@ -6,11 +6,14 @@ import java.awt.*;
 public class Pacman extends Character {
 
     private final int PACMAN_SPEED = 5;
+    private int numberOfLives;
+    private final static Image pacmanImage = new ImageIcon("media/pacman.gif").getImage();
 
     public Pacman(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         loadImages();
         setMoveVector(0, 0);
         countSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
+        numberOfLives = 3;
     }
 
     @Override
@@ -20,6 +23,18 @@ public class Pacman extends Character {
         left = new ImageIcon("media/pacman-left.gif").getImage();
         right = new ImageIcon("media/pacman-right.gif").getImage();
         actual = right;
+    }
+
+    public void decreaseLives() {
+        numberOfLives--;
+    }
+
+    public int getNumberOfLives() {
+        return numberOfLives;
+    }
+
+    public Image getPacmanImage() {
+        return pacmanImage;
     }
 
     private void stopPacmanIfMeetsWall(short[] mazeData) {
