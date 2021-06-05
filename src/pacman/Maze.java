@@ -186,11 +186,18 @@ public class Maze extends JPanel {
             initializeGhosts();
             actualMoveVector = new int[] {0, 0};
             if (pacman.isPacmanDead()) {
-                mazeData = Arrays.copyOf(mazeDataCopy, mazeDataCopy.length);
-                pacman = new Pacman(mazeData, FIELD_SIZE, WIDTH);
                 onExit = true;
             }
         }
+    }
+
+    private Boolean checkIsWholeFoodEaten() {
+        for (short number : mazeData) {
+            if (number == 2) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private void playGame() {
@@ -224,6 +231,10 @@ public class Maze extends JPanel {
             pinkGhost.goOutOfHouse(mazeData);
         }
         checkIsPacmanEaten();
+        if (checkIsWholeFoodEaten()) {
+            inGame = false;
+            onExit = true;
+        }
     }
 
     public void paintComponent(Graphics g) {
@@ -239,6 +250,10 @@ public class Maze extends JPanel {
             playGame();
         }
         else if (onExit) {
+            mazeData = Arrays.copyOf(mazeDataCopy, mazeDataCopy.length);
+            pacman = new Pacman(mazeData, FIELD_SIZE, WIDTH);
+            initializeGhosts();
+            actualMoveVector = new int[] {0, 0};
             drawExitView(g);
         }
         else {
