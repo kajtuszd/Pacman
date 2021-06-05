@@ -84,6 +84,14 @@ abstract class Character {
         System.out.println("Right " + mazeData[arrayPlace + 1]);
     }
 
+    protected int countNextLocation(int dx, int dy) {
+        int copyOfActualX = actualX + dx * CHARACTER_SPEED;
+        int copyOfActualY = actualY + dy * CHARACTER_SPEED;
+        int positionInMazeX = (copyOfActualX )/ 30;
+        int positionInMazeY = (copyOfActualY )/ 30;
+        return positionInMazeY * 28 + positionInMazeX;
+    }
+
     protected void goThroughTunnelAndChangeSide() {
         if (actualX / 30 == 27) {
             actualX -= 26 * 30;

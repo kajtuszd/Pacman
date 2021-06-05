@@ -90,7 +90,7 @@ public class Maze extends JPanel {
 
     private final short[] mazeDataCopy = Arrays.copyOf(mazeData, mazeData.length);
 
-    public void drawMaze(Graphics2D graphics) {
+    private void drawMaze(Graphics2D graphics) {
         short i = 0;
         graphics.setStroke(new BasicStroke(5));
         Color blue = new Color(10, 10, 250);
@@ -98,24 +98,20 @@ public class Maze extends JPanel {
 
         for (int x = 0; x < SCREEN_HEIGHT; x += FIELD_SIZE) {
             for (int y = 0; y < SCREEN_WIDTH; y += FIELD_SIZE) {
-
                 if (mazeData[i] == 0) {
                     graphics.setColor(blue);
                     graphics.fillRect(y, x, FIELD_SIZE*4/5, FIELD_SIZE*4/5);
                 }
-
                 if (mazeData[i] == 1 || mazeData[i] == 3 || mazeData[i] == 5 || mazeData[i] > 6) {
                     graphics.setColor(Color.black);
                     graphics.fillRect(y, x, FIELD_SIZE, FIELD_SIZE);
                 }
-
                 if (mazeData[i] == 2) {
                     graphics.setColor(Color.black);
                     graphics.fillRect(y, x, FIELD_SIZE, FIELD_SIZE);
                     graphics.setColor(yellow);
                     graphics.fillOval(y + 10 , x + 10, 5, 5);
                 }
-
                 if (mazeData[i] == 4) {
                     graphics.setColor(Color.black);
                     graphics.fillRect(y, x, FIELD_SIZE, FIELD_SIZE);
@@ -127,18 +123,18 @@ public class Maze extends JPanel {
         }
     }
 
-    public void drawPacman(Graphics2D graphics, int row, int column) {
+    private void drawPacman(Graphics2D graphics, int row, int column) {
         graphics.drawImage(pacman.getImage(), row, column, this);
     }
 
-    public void drawGhosts(Graphics2D graphics) {
+    private void drawGhosts(Graphics2D graphics) {
         graphics.drawImage(redGhost.getImage(), redGhost.actualX, redGhost.actualY, this);
         graphics.drawImage(blueGhost.getImage(), blueGhost.actualX, blueGhost.actualY, this);
         graphics.drawImage(orangeGhost.getImage(), orangeGhost.actualX, orangeGhost.actualY, this);
         graphics.drawImage(pinkGhost.getImage(), pinkGhost.actualX, pinkGhost.actualY, this);
     }
 
-    public void eatFootIfPossible() {
+    private void eatFootIfPossible() {
         if (mazeData[pacman.arrayPlace] == 2){
             mazeData[pacman.arrayPlace] = 1;
             score += 1;
