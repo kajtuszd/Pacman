@@ -19,7 +19,9 @@ public class Maze extends JPanel {
     private final int SCREEN_HEIGHT = HEIGHT * FIELD_SIZE;
     public static int score = 0;
     private final Font scoreFont = new Font("Arial", Font.BOLD, 18);
+    private final Font beginTextFont = new Font("Arial", Font.BOLD, 35);
     public int[] actualMoveVector = {0, 0};
+    public Boolean inGame = false;
 
     public Maze() {
         pacman = new Pacman(mazeData, FIELD_SIZE, WIDTH);
@@ -144,44 +146,56 @@ public class Maze extends JPanel {
         }
     }
 
+    private void drawIntroView(Graphics g) {
+        String beginText = "PRESS SPACE TO BEGIN";
+        g.setColor(Color.yellow);
+        g.setFont(beginTextFont);
+        g.drawString(beginText, 180, 430);
+    }
+
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
         drawMaze(g2d);
-        pacman.makeMove(actualMoveVector, mazeData);
-        eatFootIfPossible();
         drawPacman(g2d, pacman.actualX, pacman.actualY);
-        BlueGhost.AI blueAI = new BlueGhost.AI();
-        RedGhost.AI redAI = new RedGhost.AI();
-        PinkGhost.AI pinkAI = new PinkGhost.AI();
-        OrangeGhost.AI orangeAI = new OrangeGhost.AI();
-        blueAI.start();
-        pinkAI.start();
-        orangeAI.start();
-        redAI.start();
-        try {
-            blueAI.join();
-            pinkAI.join();
-            orangeAI.join();
-            redAI.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if (redGhost.isInHouse) {
-            redGhost.goOutOfHouse(mazeData);
-        }
-        if (blueGhost.isInHouse) {
-            blueGhost.goOutOfHouse(mazeData);
-        }
-        if(orangeGhost.isInHouse) {
-            orangeGhost.goOutOfHouse(mazeData);
-        }
-        if(pinkGhost.isInHouse) {
-            pinkGhost.goOutOfHouse(mazeData);
-        }
+        eatFootIfPossible();
         drawGhosts(g2d);
         drawScore(g2d);
         drawLives(g2d);
+        if (inGame) {
+            pacman.makeMove(actualMoveVector, mazeData);
+            BlueGhost.AI blueAI = new BlueGhost.AI();
+            RedGhost.AI redAI = new RedGhost.AI();
+            PinkGhost.AI pinkAI = new PinkGhost.AI();
+            OrangeGhost.AI orangeAI = new OrangeGhost.AI();
+            blueAI.start();
+            pinkAI.start();
+            orangeAI.start();
+            redAI.start();
+            try {
+                blueAI.join();
+                pinkAI.join();
+                orangeAI.join();
+                redAI.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (redGhost.isInHouse) {
+                redGhost.goOutOfHouse(mazeData);
+            }
+            if (blueGhost.isInHouse) {
+                blueGhost.goOutOfHouse(mazeData);
+            }
+            if(orangeGhost.isInHouse) {
+                orangeGhost.goOutOfHouse(mazeData);
+            }
+            if(pinkGhost.isInHouse) {
+                pinkGhost.goOutOfHouse(mazeData);
+            }
+        }
+        else {
+            drawIntroView(g);
+        }
     }
 
     class PacmanAdapter extends KeyAdapter {
@@ -189,17 +203,21 @@ public class Maze extends JPanel {
         @Override
         public void keyPressed(KeyEvent e) {
             int pressedKey = e.getKeyCode();
-            if (pressedKey == KeyEvent.VK_UP) {
-                actualMoveVector = new int[] {0, -1};
-            }
-            if (pressedKey == KeyEvent.VK_DOWN) {
-                actualMoveVector = new int[] {0, 1};
-            }
-            if (pressedKey == KeyEvent.VK_LEFT) {
-                actualMoveVector = new int[] {-1, 0};
-            }
-            if (pressedKey == KeyEvent.VK_RIGHT) {
-                actualMoveVector = new int[] {1, 0};
+            if (inGame) {
+                if (pressedKey == KeyEvent.VK_UP) {
+                    actualMoveVector = new int[] {0, -1};
+                }
+                if (pressedKey == KeyEvent.VK_DOWN) {
+                    actualMoveVector = new int[] {0, 1};
+                }
+                if (pressedKey == KeyEvent.VK_LEFT) {
+                    actualMoveVector = new int[] {-1, 0};
+                }
+                if (pressedKey == KeyEvent.VK_RIGHT) {
+                    actualMoveVector = new int[] {1, 0};
+                }
+            } else if (pressedKey == KeyEvent.VK_SPACE) {
+                inGame = true;
             }
         }
     }
