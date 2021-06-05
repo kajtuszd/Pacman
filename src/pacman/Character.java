@@ -12,7 +12,7 @@ abstract class Character {
     protected Image left;
     protected Image right;
     protected Image actual;
-    private final int CHARACTER_SPEED = 5;
+    protected final int CHARACTER_SPEED = 5;
     public int arrayPlace;
 
 
@@ -82,5 +82,17 @@ abstract class Character {
         System.out.println("Down " + mazeData[arrayPlace + 28]);
         System.out.println("Left " + mazeData[arrayPlace - 1]);
         System.out.println("Right " + mazeData[arrayPlace + 1]);
+    }
+
+    protected void goThroughTunnelAndChangeSide() {
+        if (actualX / 30 == 27) {
+            actualX -= 26 * 30;
+        }
+        if (actualX / 30 == 0) {
+            actualX += 26 * 30;
+        }
+        int positionInMazeX = ( actualX )/ 30;
+        int positionInMazeY = ( actualY )/ 30;
+        arrayPlace = positionInMazeY * 28 + positionInMazeX;
     }
 }

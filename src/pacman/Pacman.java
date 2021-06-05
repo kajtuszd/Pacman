@@ -65,18 +65,6 @@ public class Pacman extends Character {
         }
     }
 
-    private void goThroughTunnelAndChangeSide() {
-        if (actualX / 30 == 27) {
-            actualX -= 26 * 30;
-        }
-        if (actualX / 30 == 0) {
-            actualX += 26 * 30;
-        }
-        int positionInMazeX = ( actualX )/ 30;
-        int positionInMazeY = ( actualY )/ 30;
-        arrayPlace = positionInMazeY * 28 + positionInMazeX;
-    }
-
     @Override
     protected void countSpawnCoordinates(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         int pacmanSpawnIndex = 0;

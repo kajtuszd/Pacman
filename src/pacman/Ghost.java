@@ -26,6 +26,7 @@ abstract class Ghost extends Character {
             setMoveVector(-1, 0);
             turnLeft();
         }
+        goThroughTunnelAndChangeSide();
         updateCoordinates();
     }
 
@@ -34,6 +35,7 @@ abstract class Ghost extends Character {
             setMoveVector(1, 0);
             turnRight();
         }
+        goThroughTunnelAndChangeSide();
         updateCoordinates();
     }
 
@@ -58,6 +60,40 @@ abstract class Ghost extends Character {
         }
         if (mazeData[arrayPlace - 1] != 0 && !isLeftSide) {
             goLeft(mazeData);
+        }
+    }
+
+    private int countNextLocation(int dx, int dy) {
+        int copyOfActualX = actualX + dx * CHARACTER_SPEED;
+        int copyOfActualY = actualY + dy * CHARACTER_SPEED;
+        int positionInMazeX = (copyOfActualX )/ 30;
+        int positionInMazeY = (copyOfActualY )/ 30;
+        return positionInMazeY * 28 + positionInMazeX;
+    }
+
+    public void goLeftVerified(short[] mazeData) {
+        if (mazeData[countNextLocation(-1, 0)] != 0) {
+            goLeft(mazeData);
+        }
+    }
+
+    public void goRightVerified(short[] mazeData) {
+        if (mazeData[countNextLocation(1, 0) + 1] != 0) {
+            goRight(mazeData);
+            updateCoordinates();
+        }
+    }
+
+    public void goUpVerified(short[] mazeData) {
+        if (mazeData[countNextLocation(0, -1)] != 0) {
+            goUp(mazeData);
+        }
+    }
+
+    public void goDownVerified(short[] mazeData) {
+        if (mazeData[countNextLocation(0, 1) + 28] != 0) {
+            goDown(mazeData);
+            updateCoordinates();
         }
     }
 }
