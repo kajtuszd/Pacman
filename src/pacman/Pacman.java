@@ -25,7 +25,17 @@ public class Pacman extends Character {
         actual = right;
     }
 
-    public void decreaseLives() {
+    public void respawnPacman(short[] mazeData, int FIELD_SIZE, int WIDTH) {
+        setMoveVector(0, 0);
+        countSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
+        decreaseLives();
+    }
+
+    public Boolean isPacmanDead() {
+        return getNumberOfLives() == 0;
+    }
+
+    private void decreaseLives() {
         numberOfLives--;
     }
 
@@ -108,5 +118,12 @@ public class Pacman extends Character {
         goThroughTunnelAndChangeSide();
         updateCoordinates();
         stopPacmanIfMeetsWall(mazeData);
+    }
+
+    public Boolean isCollision(int x, int y) {
+        int positionInMazeX = x / 30;
+        int positionInMazeY = y / 30;
+        int copyOfArrayPlace = positionInMazeY * 28 + positionInMazeX;
+        return arrayPlace == copyOfArrayPlace;
     }
 }

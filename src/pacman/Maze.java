@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 
 public class Maze extends JPanel {
 
@@ -17,21 +18,33 @@ public class Maze extends JPanel {
     private final int FIELD_SIZE = 30;
     private final int SCREEN_WIDTH = WIDTH * FIELD_SIZE;
     private final int SCREEN_HEIGHT = HEIGHT * FIELD_SIZE;
-    public static int score = 0;
+    public static int score;
     private final Font scoreFont = new Font("Arial", Font.BOLD, 18);
-    private final Font beginTextFont = new Font("Arial", Font.BOLD, 35);
-    public int[] actualMoveVector = {0, 0};
-    public Boolean inGame = false;
+    private final Font viewsTextFont = new Font("Arial", Font.BOLD, 35);
+    public int[] actualMoveVector;
+    public Boolean inGame;
+    public Boolean onExit = false;
 
     public Maze() {
+        initializeGame();
+    }
+
+    private void initializeGame() {
         pacman = new Pacman(mazeData, FIELD_SIZE, WIDTH);
+        initializeGhosts();
+        addKeyListener(new PacmanAdapter());
+        setFocusable(true);
+        setBackground(Color.black);
+        actualMoveVector = new int[] {0, 0};
+        inGame = false;
+        score = 0;
+    }
+
+    private void initializeGhosts() {
         redGhost = new RedGhost(mazeData, FIELD_SIZE, WIDTH);
         blueGhost = new BlueGhost(mazeData, FIELD_SIZE, WIDTH);
         pinkGhost = new PinkGhost(mazeData, FIELD_SIZE, WIDTH);
         orangeGhost = new OrangeGhost(mazeData, FIELD_SIZE, WIDTH);
-        addKeyListener(new PacmanAdapter());
-        setFocusable(true);
-        setBackground(Color.black);
     }
 
     /*
@@ -74,6 +87,8 @@ public class Maze extends JPanel {
             0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     };
+
+    private final short[] mazeDataCopy = Arrays.copyOf(mazeData, mazeData.length);
 
     public void drawMaze(Graphics2D graphics) {
         short i = 0;
@@ -149,8 +164,66 @@ public class Maze extends JPanel {
     private void drawIntroView(Graphics g) {
         String beginText = "PRESS SPACE TO BEGIN";
         g.setColor(Color.yellow);
-        g.setFont(beginTextFont);
+        g.setFont(viewsTextFont);
         g.drawString(beginText, 180, 430);
+    }
+
+    private void drawExitView(Graphics g) {
+        String scoreText = "YOUR SCORE: " + score;
+        String helpText = "PRESS SPACE";
+        g.setColor(Color.red);
+        g.setFont(viewsTextFont);
+        g.drawString(scoreText, 240, 520);
+        g.setColor(Color.yellow);
+        g.drawString(helpText, 270, 570);
+    }
+
+    private void checkIsPacmanEaten() {
+        if (pacman.isCollision(blueGhost.actualX, blueGhost.actualY) || pacman.isCollision(redGhost.actualX, redGhost.actualY)
+        || pacman.isCollision(orangeGhost.actualX, orangeGhost.actualY) || pacman.isCollision(pinkGhost.actualX, pinkGhost.actualY)) {
+            pacman.respawnPacman(mazeData, FIELD_SIZE, WIDTH);
+            inGame = false;
+            initializeGhosts();
+            actualMoveVector = new int[] {0, 0};
+            if (pacman.isPacmanDead()) {
+                mazeData = Arrays.copyOf(mazeDataCopy, mazeDataCopy.length);
+                pacman = new Pacman(mazeData, FIELD_SIZE, WIDTH);
+                onExit = true;
+            }
+        }
+    }
+
+    private void playGame() {
+        pacman.makeMove(actualMoveVector, mazeData);
+        BlueGhost.AI blueAI = new BlueGhost.AI();
+        RedGhost.AI redAI = new RedGhost.AI();
+        PinkGhost.AI pinkAI = new PinkGhost.AI();
+        OrangeGhost.AI orangeAI = new OrangeGhost.AI();
+        blueAI.start();
+        pinkAI.start();
+        orangeAI.start();
+        redAI.start();
+        try {
+            blueAI.join();
+            pinkAI.join();
+            orangeAI.join();
+            redAI.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (redGhost.isInHouse) {
+            redGhost.goOutOfHouse(mazeData);
+        }
+        if (blueGhost.isInHouse) {
+            blueGhost.goOutOfHouse(mazeData);
+        }
+        if(orangeGhost.isInHouse) {
+            orangeGhost.goOutOfHouse(mazeData);
+        }
+        if(pinkGhost.isInHouse) {
+            pinkGhost.goOutOfHouse(mazeData);
+        }
+        checkIsPacmanEaten();
     }
 
     public void paintComponent(Graphics g) {
@@ -163,35 +236,10 @@ public class Maze extends JPanel {
         drawScore(g2d);
         drawLives(g2d);
         if (inGame) {
-            pacman.makeMove(actualMoveVector, mazeData);
-            BlueGhost.AI blueAI = new BlueGhost.AI();
-            RedGhost.AI redAI = new RedGhost.AI();
-            PinkGhost.AI pinkAI = new PinkGhost.AI();
-            OrangeGhost.AI orangeAI = new OrangeGhost.AI();
-            blueAI.start();
-            pinkAI.start();
-            orangeAI.start();
-            redAI.start();
-            try {
-                blueAI.join();
-                pinkAI.join();
-                orangeAI.join();
-                redAI.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if (redGhost.isInHouse) {
-                redGhost.goOutOfHouse(mazeData);
-            }
-            if (blueGhost.isInHouse) {
-                blueGhost.goOutOfHouse(mazeData);
-            }
-            if(orangeGhost.isInHouse) {
-                orangeGhost.goOutOfHouse(mazeData);
-            }
-            if(pinkGhost.isInHouse) {
-                pinkGhost.goOutOfHouse(mazeData);
-            }
+            playGame();
+        }
+        else if (onExit) {
+            drawExitView(g);
         }
         else {
             drawIntroView(g);
@@ -216,8 +264,11 @@ public class Maze extends JPanel {
                 if (pressedKey == KeyEvent.VK_RIGHT) {
                     actualMoveVector = new int[] {1, 0};
                 }
-            } else if (pressedKey == KeyEvent.VK_SPACE) {
+            } else if (pressedKey == KeyEvent.VK_SPACE && !onExit) {
                 inGame = true;
+            } else if (pressedKey == KeyEvent.VK_SPACE) {
+                onExit = false;
+                score = 0;
             }
         }
     }
