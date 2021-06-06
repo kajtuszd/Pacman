@@ -37,10 +37,22 @@ public class RedGhost extends Ghost {
     }
 
     public static class AI extends Thread {
+
+        short[] mazeData;
+        int pacmanX;
+        int pacmanY;
+
+        public AI(short[] data, int pacX, int pacY) {
+            mazeData = data;
+            pacmanX = pacX;
+            pacmanY = pacY;
+        }
+
         @Override
         public void run() {
             super.run();
 //            System.out.println("Hello from red");
         }
+
     }
 }

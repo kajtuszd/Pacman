@@ -199,7 +199,7 @@ public class Maze extends JPanel {
     private void playGame() {
         pacman.makeMove(actualMoveVector, mazeData);
         BlueGhost.AI blueAI = new BlueGhost.AI();
-        RedGhost.AI redAI = new RedGhost.AI();
+        RedGhost.AI redAI = new RedGhost.AI(mazeData, pacman.actualX, pacman.actualY);
         PinkGhost.AI pinkAI = new PinkGhost.AI();
         OrangeGhost.AI orangeAI = new OrangeGhost.AI();
         blueAI.start();

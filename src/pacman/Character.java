@@ -15,7 +15,6 @@ abstract class Character {
     protected final int CHARACTER_SPEED = 5;
     public int arrayPlace;
 
-
     abstract void loadImages();
     abstract void countSpawnCoordinates(short[] mazeData, int FIELD_SIZE, int WIDTH);
 
@@ -90,6 +89,30 @@ abstract class Character {
         int positionInMazeX = (copyOfActualX )/ 30;
         int positionInMazeY = (copyOfActualY )/ 30;
         return positionInMazeY * 28 + positionInMazeX;
+    }
+
+    private Boolean fieldIsNotEmpty(short[] mazeData, int arrayPlace) {
+        return mazeData[arrayPlace] != 0 && mazeData[arrayPlace] != 4;
+    }
+
+    public Boolean isOnNode(short[] mazeData) {
+        // left and up is not empty
+        if (fieldIsNotEmpty(mazeData, arrayPlace - 1) && fieldIsNotEmpty(mazeData, arrayPlace - 28)) {
+            return true;
+        }
+        // up and right is not empty
+        if (fieldIsNotEmpty(mazeData, arrayPlace - 28) && fieldIsNotEmpty(mazeData, arrayPlace + 1)) {
+            return true;
+        }
+        // right and down is not empty
+        if (fieldIsNotEmpty(mazeData, arrayPlace + 1) && fieldIsNotEmpty(mazeData, arrayPlace + 28)) {
+            return true;
+        }
+        // down and left is not empty
+        if (fieldIsNotEmpty(mazeData, arrayPlace + 28) && fieldIsNotEmpty(mazeData, arrayPlace - 1)) {
+            return true;
+        }
+        return false;
     }
 
     protected void goThroughTunnelAndChangeSide() {
