@@ -36,7 +36,7 @@ public class RedGhost extends Ghost {
         actualY = cols * FIELD_SIZE;
     }
 
-    public static class AI extends Thread {
+    public class AI extends Thread {
 
         short[] mazeData;
         int pacmanX;
@@ -51,8 +51,10 @@ public class RedGhost extends Ghost {
         @Override
         public void run() {
             super.run();
-//            System.out.println("Hello from red");
+//            System.out.println("Hello from orange");
+            if (!isInHouse) {
+                evaluateNextMove(mazeData);
+            }
         }
-
     }
 }
