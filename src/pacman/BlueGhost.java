@@ -1,12 +1,20 @@
 package pacman;
 
 import javax.swing.*;
-import java.awt.*;
 
+/**
+ * Blue ghost class
+ */
 public class BlueGhost extends Ghost {
 
     private final int SPAWN_PLACE = 7;
 
+    /**
+     * Blue Ghost constructor
+     * @param mazeData array storing maze data
+     * @param FIELD_SIZE field size in pixels
+     * @param WIDTH maze width
+     */
     public BlueGhost(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         loadImages();
         countSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
@@ -14,6 +22,9 @@ public class BlueGhost extends Ghost {
         updateCoordinates();
     }
 
+    /**
+     * Method used to load ghost images from files
+     */
     @Override
     protected void loadImages() {
         up = new ImageIcon("media/bu.gif").getImage();
@@ -23,6 +34,12 @@ public class BlueGhost extends Ghost {
         actual = right;
     }
 
+    /**
+     * Method used to find blue ghost spawn place
+     * @param mazeData array storing maze data
+     * @param FIELD_SIZE field size in pixels
+     * @param WIDTH maze width
+     */
     @Override
     public void countSpawnCoordinates(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         int spawnIndex = 0;
@@ -36,19 +53,23 @@ public class BlueGhost extends Ghost {
         actualY = cols * FIELD_SIZE;
     }
 
-
+    /**
+     * Blue Ghost AI
+     */
     public class AI extends Thread {
 
         short[] mazeData;
-        int pacmanX;
-        int pacmanY;
 
-        public AI(short[] data, int pacX, int pacY) {
+        /**
+         * @param data array storing maze data
+         */
+        public AI(short[] data) {
             mazeData = data;
-            pacmanX = pacX;
-            pacmanY = pacY;
         }
 
+        /**
+         * Method used to create thread and choose next ghost move
+         */
         @Override
         public void run() {
             super.run();

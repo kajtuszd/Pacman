@@ -2,10 +2,19 @@ package pacman;
 
 import javax.swing.*;
 
+/**
+ * Orange ghost class
+ */
 public class OrangeGhost extends Ghost {
 
     private final int SPAWN_PLACE = 8;
 
+    /**
+     * Orange Ghost constructor
+     * @param mazeData array storing maze data
+     * @param FIELD_SIZE field size in pixels
+     * @param WIDTH maze width
+     */
     public OrangeGhost(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         loadImages();
         countSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
@@ -13,6 +22,9 @@ public class OrangeGhost extends Ghost {
         updateCoordinates();
     }
 
+    /**
+     * Method used to load ghost images from files
+     */
     @Override
     protected void loadImages() {
         up = new ImageIcon("media/ou.gif").getImage();
@@ -22,6 +34,12 @@ public class OrangeGhost extends Ghost {
         actual = right;
     }
 
+    /**
+     * Method used to find orange ghost spawn place
+     * @param mazeData array storing maze data
+     * @param FIELD_SIZE field size in pixels
+     * @param WIDTH maze width
+     */
     @Override
     public void countSpawnCoordinates(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         int spawnIndex = 0;
@@ -35,18 +53,23 @@ public class OrangeGhost extends Ghost {
         actualY = cols * FIELD_SIZE;
     }
 
+    /**
+     * Orange Ghost AI
+     */
     public class AI extends Thread {
 
         short[] mazeData;
-        int pacmanX;
-        int pacmanY;
 
-        public AI(short[] data, int pacX, int pacY) {
+        /**
+         * @param data array storing maze data
+         */
+        public AI(short[] data) {
             mazeData = data;
-            pacmanX = pacX;
-            pacmanY = pacY;
         }
 
+        /**
+         * Method used to create thread and choose next ghost move
+         */
         @Override
         public void run() {
             super.run();
@@ -54,6 +77,5 @@ public class OrangeGhost extends Ghost {
                 evaluateNextMove(mazeData);
             }
         }
-
     }
 }

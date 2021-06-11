@@ -6,6 +6,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Arrays;
 
+/**
+ * Maze class
+ */
 public class Maze extends JPanel {
 
     private Pacman pacman;
@@ -25,10 +28,17 @@ public class Maze extends JPanel {
     public Boolean inGame;
     public Boolean onExit = false;
 
+    /**
+     * Maze constructor
+     */
     public Maze() {
         initializeGame();
     }
 
+    /**
+     * Method used to initialize Pacman, ghosts, move adapter and set background,
+     * score, actual move vector variables
+     */
     private void initializeGame() {
         pacman = new Pacman(mazeData, FIELD_SIZE, WIDTH);
         initializeGhosts();
@@ -40,6 +50,9 @@ public class Maze extends JPanel {
         score = 0;
     }
 
+    /**
+     * Method used to initialize ghosts
+     */
     private void initializeGhosts() {
         redGhost = new RedGhost(mazeData, FIELD_SIZE, WIDTH);
         blueGhost = new BlueGhost(mazeData, FIELD_SIZE, WIDTH);
@@ -90,6 +103,10 @@ public class Maze extends JPanel {
 
     private final short[] mazeDataCopy = Arrays.copyOf(mazeData, mazeData.length);
 
+    /**
+     * Method used to draw maze
+     * @param graphics graphics object to draw components
+     */
     private void drawMaze(Graphics2D graphics) {
         short i = 0;
         graphics.setStroke(new BasicStroke(5));
@@ -123,10 +140,20 @@ public class Maze extends JPanel {
         }
     }
 
+    /**
+     * Method used to draw Pacman
+     * @param graphics graphics object to draw components
+     * @param row current Pacman row
+     * @param column current Pacman column
+     */
     private void drawPacman(Graphics2D graphics, int row, int column) {
         graphics.drawImage(pacman.getImage(), row, column, this);
     }
 
+    /**
+     * Method used to draw ghosts
+     * @param graphics graphics object to draw components
+     */
     private void drawGhosts(Graphics2D graphics) {
         graphics.drawImage(redGhost.getImage(), redGhost.actualX, redGhost.actualY, this);
         graphics.drawImage(blueGhost.getImage(), blueGhost.actualX, blueGhost.actualY, this);
@@ -134,6 +161,9 @@ public class Maze extends JPanel {
         graphics.drawImage(pinkGhost.getImage(), pinkGhost.actualX, pinkGhost.actualY, this);
     }
 
+    /**
+     * Method used to eat food on current field
+     */
     private void eatFootIfPossible() {
         if (mazeData[pacman.arrayPlace] == 2){
             mazeData[pacman.arrayPlace] = 1;
@@ -141,6 +171,10 @@ public class Maze extends JPanel {
         }
     }
 
+    /**
+     * Method used to draw score
+     * @param g graphics object to draw components
+     */
     private void drawScore(Graphics g) {
         String result = "Score: " + score;
         g.setColor(Color.yellow);
@@ -148,6 +182,10 @@ public class Maze extends JPanel {
         g.drawString(result, 10, 950);
     }
 
+    /**
+     * Method used to draw lives
+     * @param g graphics object to draw components
+     */
     private void drawLives(Graphics g) {
         int row = 750;
         int column = 930;
@@ -157,6 +195,10 @@ public class Maze extends JPanel {
         }
     }
 
+    /**
+     * Method used to draw intro view
+     * @param g graphics object to draw components
+     */
     private void drawIntroView(Graphics g) {
         String beginText = "PRESS SPACE TO BEGIN";
         g.setColor(Color.yellow);
@@ -164,6 +206,10 @@ public class Maze extends JPanel {
         g.drawString(beginText, 180, 430);
     }
 
+    /**
+     * Method used to draw exit view
+     * @param g graphics object to draw components
+     */
     private void drawExitView(Graphics g) {
         String scoreText = "YOUR SCORE: " + score;
         String helpText = "PRESS SPACE";
@@ -174,6 +220,9 @@ public class Maze extends JPanel {
         g.drawString(helpText, 270, 570);
     }
 
+    /**
+     * Method checking if Pacman is eaten
+     */
     private void checkIsPacmanEaten() {
         if (pacman.isCollision(blueGhost.actualX, blueGhost.actualY) || pacman.isCollision(redGhost.actualX, redGhost.actualY)
         || pacman.isCollision(orangeGhost.actualX, orangeGhost.actualY) || pacman.isCollision(pinkGhost.actualX, pinkGhost.actualY)) {
@@ -187,6 +236,10 @@ public class Maze extends JPanel {
         }
     }
 
+    /**
+     * Check if is whole food eaten
+     * @return is whole food eaten
+     */
     private Boolean checkIsWholeFoodEaten() {
         for (short number : mazeData) {
             if (number == 2) {
@@ -196,12 +249,15 @@ public class Maze extends JPanel {
         return true;
     }
 
+    /**
+     * Main game loop
+     */
     private void playGame() {
         pacman.makeMove(actualMoveVector, mazeData);
-        BlueGhost.AI blueAI = blueGhost.new AI(mazeData, pacman.actualX, pacman.actualY);
-        RedGhost.AI redAI = redGhost.new AI(mazeData, pacman.actualX, pacman.actualY);
-        PinkGhost.AI pinkAI = pinkGhost.new AI(mazeData, pacman.actualX, pacman.actualY);
-        OrangeGhost.AI orangeAI = orangeGhost.new AI(mazeData, pacman.actualX, pacman.actualY);
+        BlueGhost.AI blueAI = blueGhost.new AI(mazeData);
+        RedGhost.AI redAI = redGhost.new AI(mazeData);
+        PinkGhost.AI pinkAI = pinkGhost.new AI(mazeData);
+        OrangeGhost.AI orangeAI = orangeGhost.new AI(mazeData);
         blueAI.start();
         pinkAI.start();
         orangeAI.start();
@@ -233,6 +289,10 @@ public class Maze extends JPanel {
         }
     }
 
+    /**
+     * Loop used to paint component
+     * @param g graphics object to draw components
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
@@ -257,8 +317,15 @@ public class Maze extends JPanel {
         }
     }
 
+    /**
+     * Pacman key adapter
+     */
     class PacmanAdapter extends KeyAdapter {
 
+        /**
+         * Method used to read pressed key
+         * @param e event used to recognize pressed key
+         */
         @Override
         public void keyPressed(KeyEvent e) {
             int pressedKey = e.getKeyCode();

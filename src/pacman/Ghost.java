@@ -1,10 +1,17 @@
 package pacman;
 
+/**
+ * Abstract ghost class
+ */
 abstract class Ghost extends Character {
 
     public Boolean isInHouse = true;
     private Boolean isLeftSide = true;
 
+    /**
+     * Force ghost to go up
+     * @param mazeData array storing maze data
+     */
     public void goUp(short[] mazeData) {
         if (isHorizontalMoveValid() && canMoveUp(mazeData)) {
             setMoveVector(0, -1);
@@ -13,6 +20,10 @@ abstract class Ghost extends Character {
         updateCoordinates();
     }
 
+    /**
+     * Force ghost to go down
+     * @param mazeData array storing maze data
+     */
     public void goDown(short[] mazeData) {
         if (isHorizontalMoveValid() && canMoveDown(mazeData)) {
             setMoveVector(0, 1);
@@ -21,6 +32,10 @@ abstract class Ghost extends Character {
         updateCoordinates();
     }
 
+    /**
+     * Force ghost to go left
+     * @param mazeData array storing maze data
+     */
     public void goLeft(short[] mazeData) {
         if (isVerticalMoveValid() && canMoveLeft(mazeData)) {
             setMoveVector(-1, 0);
@@ -30,6 +45,10 @@ abstract class Ghost extends Character {
         updateCoordinates();
     }
 
+    /**
+     * Force ghost to go right
+     * @param mazeData array storing maze data
+     */
     public void goRight(short[] mazeData) {
         if (isVerticalMoveValid() && canMoveRight(mazeData)) {
             setMoveVector(1, 0);
@@ -39,10 +58,19 @@ abstract class Ghost extends Character {
         updateCoordinates();
     }
 
+    /**
+     * Method checking if ghost went out of home
+     * @param mazeData array storing maze data
+     * @return is ghost out of home
+     */
     private Boolean checkIfGhostCrossedWhiteLine(short[] mazeData) {
         return (mazeData[arrayPlace + 28] == 4 && actualY % 30 == 0);
     }
 
+    /**
+     * Make ghost go out of home
+     * @param mazeData array storing maze data
+     */
     public void goOutOfHouse(short[] mazeData) {
         if (checkIfGhostCrossedWhiteLine(mazeData)) {
             isInHouse = false;
@@ -64,6 +92,11 @@ abstract class Ghost extends Character {
         }
     }
 
+    /**
+     * Method used to change ghost movement direction
+     * @param vecX horizontal vector
+     * @param vecY vertical vector
+     */
     protected void decideWhereToMove(int vecX, int vecY) {
         if (vecX == 1 && vecY == 0) {
             setMoveVector(1, 0);
@@ -83,6 +116,10 @@ abstract class Ghost extends Character {
         }
     }
 
+    /**
+     * Method used to draw next ghost move
+     * @param mazeData array storing maze data
+     */
     protected void evaluateNextMove(short[] mazeData) {
         if (mazeData[countNextLocation(moveDX, moveDY)] == 0 || mazeData[countNextLocation(moveDX, moveDY)] == 0
                 || mazeData[countNextLocation(moveDX, moveDY)] == 4) {
