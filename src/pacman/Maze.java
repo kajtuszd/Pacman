@@ -201,7 +201,7 @@ public class Maze extends JPanel {
         BlueGhost.AI blueAI = new BlueGhost.AI();
         RedGhost.AI redAI = new RedGhost.AI(mazeData, pacman.actualX, pacman.actualY);
         PinkGhost.AI pinkAI = new PinkGhost.AI();
-        OrangeGhost.AI orangeAI = new OrangeGhost.AI();
+        OrangeGhost.AI orangeAI = orangeGhost.new AI(mazeData, pacman.actualX, pacman.actualY);
         blueAI.start();
         pinkAI.start();
         orangeAI.start();

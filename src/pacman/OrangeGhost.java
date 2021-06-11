@@ -1,7 +1,6 @@
 package pacman;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class OrangeGhost extends Ghost {
 
@@ -36,11 +35,57 @@ public class OrangeGhost extends Ghost {
         actualY = cols * FIELD_SIZE;
     }
 
-    public static class AI extends Thread {
+    public class AI extends Thread {
+
+        short[] mazeData;
+        int pacmanX;
+        int pacmanY;
+
+        public AI(short[] data, int pacX, int pacY) {
+            mazeData = data;
+            pacmanX = pacX;
+            pacmanY = pacY;
+        }
+
+        private void evaluateNextMove() {
+            if (mazeData[countNextLocation(moveDX, moveDY)] == 0 || mazeData[countNextLocation(moveDX, moveDY)] == 0
+                                                                || mazeData[countNextLocation(moveDX, moveDY)] == 4) {
+                setMoveVector(0,0);
+            }
+            if (isOnNode(mazeData) || (moveDX == 0 && moveDY == 0)) {
+                int randomNumber = (int) ((Math.random() * (4)));
+                int vectX = 0, vectY = 0;
+                if (randomNumber == 0 && mazeData[countNextLocation(-1, 0)] != 0) { // left
+                    vectX = -1;
+                    vectY = 0;
+                }
+                if (randomNumber == 1 && mazeData[countNextLocation(1, 0) + 1] != 0) { // right
+                    vectX = 1;
+                    vectY = 0;
+                }
+                if (randomNumber == 2 && mazeData[countNextLocation(0, 1) + 28] != 0 &&
+                                            mazeData[countNextLocation(0, 1) + 28] != 4) { // down
+                    vectX = 0;
+                    vectY = 1;
+                }
+                if (randomNumber == 3 && mazeData[countNextLocation(0, -1 )] != 0) { // up
+                    vectX = 0;
+                    vectY = -1;
+                }
+                decideWhereToMove(vectX, vectY);
+            }
+            updateCoordinates();
+            goThroughTunnelAndChangeSide();
+        }
+
         @Override
         public void run() {
             super.run();
 //            System.out.println("Hello from orange");
+            if (!isInHouse) {
+                evaluateNextMove();
+            }
         }
+
     }
 }

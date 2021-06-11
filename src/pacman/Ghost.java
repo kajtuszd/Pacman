@@ -46,6 +46,7 @@ abstract class Ghost extends Character {
     public void goOutOfHouse(short[] mazeData) {
         if (checkIfGhostCrossedWhiteLine(mazeData)) {
             isInHouse = false;
+            setMoveVector(0, 0);
             return;
         }
         if (mazeData[arrayPlace - 28] != 0) {
@@ -63,29 +64,22 @@ abstract class Ghost extends Character {
         }
     }
 
-    public void goLeftVerified(short[] mazeData) {
-        if (mazeData[countNextLocation(-1, 0)] != 0) {
-            goLeft(mazeData);
+    protected void decideWhereToMove(int vecX, int vecY) {
+        if (vecX == 1 && vecY == 0) {
+            setMoveVector(1, 0);
+            turnRight();
         }
-    }
-
-    public void goRightVerified(short[] mazeData) {
-        if (mazeData[countNextLocation(1, 0) + 1] != 0) {
-            goRight(mazeData);
-            updateCoordinates();
+        if (vecX == -1 && vecY == 0) {
+            setMoveVector(-1, 0);
+            turnLeft();
         }
-    }
-
-    public void goUpVerified(short[] mazeData) {
-        if (mazeData[countNextLocation(0, -1)] != 0) {
-            goUp(mazeData);
+        if (vecX == 0 && vecY == -1) {
+            setMoveVector(0, -1);
+            turnUp();
         }
-    }
-
-    public void goDownVerified(short[] mazeData) {
-        if (mazeData[countNextLocation(0, 1) + 28] != 0) {
-            goDown(mazeData);
-            updateCoordinates();
+        if (vecX == 0 && vecY == 1) {
+            setMoveVector(0, 1);
+            turnDown();
         }
     }
 }

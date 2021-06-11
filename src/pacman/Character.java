@@ -75,17 +75,15 @@ abstract class Character {
         return actual;
     }
 
-    public void printNeighbours(short[] mazeData) {
-        System.out.println(arrayPlace);
-        System.out.println((arrayPlace -28 )+ " actual  Up " + mazeData[arrayPlace - 28]);
-        System.out.println("Down " + mazeData[arrayPlace + 28]);
-        System.out.println("Left " + mazeData[arrayPlace - 1]);
-        System.out.println("Right " + mazeData[arrayPlace + 1]);
-    }
-
     protected int countNextLocation(int dx, int dy) {
         int copyOfActualX = actualX + dx * CHARACTER_SPEED;
         int copyOfActualY = actualY + dy * CHARACTER_SPEED;
+        if (moveDX == 1 && moveDY == 0) {
+            copyOfActualX = actualX + 30;
+        }
+        if (moveDX == 0 && moveDY == 1) {
+            copyOfActualY = actualY + 30;
+        }
         int positionInMazeX = (copyOfActualX )/ 30;
         int positionInMazeY = (copyOfActualY )/ 30;
         return positionInMazeY * 28 + positionInMazeX;
@@ -95,22 +93,33 @@ abstract class Character {
         return mazeData[arrayPlace] != 0 && mazeData[arrayPlace] != 4;
     }
 
-    public Boolean isOnNode(short[] mazeData) {
-        // left and up is not empty
+    protected Boolean isOnNode(short[] mazeData) {
+        if (mazeData[countNextLocation(moveDX, moveDY)] == 0) {
+            setMoveVector(0,0);
+            return false;
+        }
         if (fieldIsNotEmpty(mazeData, arrayPlace - 1) && fieldIsNotEmpty(mazeData, arrayPlace - 28)) {
-            return true;
+            if (actualY % 30 == 0 && actualX % 30 == 0) {
+                    return true;
+            }
         }
         // up and right is not empty
         if (fieldIsNotEmpty(mazeData, arrayPlace - 28) && fieldIsNotEmpty(mazeData, arrayPlace + 1)) {
-            return true;
+            if (actualY % 30 == 0 && actualX % 30 == 0) {
+                return true;
+            }
         }
         // right and down is not empty
         if (fieldIsNotEmpty(mazeData, arrayPlace + 1) && fieldIsNotEmpty(mazeData, arrayPlace + 28)) {
-            return true;
+            if (actualY % 30 == 0 && actualX % 30 == 0) {
+                    return true;
+            }
         }
         // down and left is not empty
         if (fieldIsNotEmpty(mazeData, arrayPlace + 28) && fieldIsNotEmpty(mazeData, arrayPlace - 1)) {
-            return true;
+            if (actualY % 30 == 0 && actualX % 30 == 0) {
+                    return true;
+            }
         }
         return false;
     }
