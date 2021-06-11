@@ -3,12 +3,21 @@ package pacman;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Pacman class
+ */
 public class Pacman extends Character {
 
     private final int PACMAN_SPEED = 5;
     private int numberOfLives;
     private final static Image pacmanImage = new ImageIcon("media/pacman.gif").getImage();
 
+    /**
+     * Pacman constructor
+     * @param mazeData array storing maze data
+     * @param FIELD_SIZE field size in pixels
+     * @param WIDTH maze width
+     */
     public Pacman(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         loadImages();
         setMoveVector(0, 0);
@@ -16,6 +25,9 @@ public class Pacman extends Character {
         numberOfLives = 3;
     }
 
+    /**
+     * Method used to load Pacman images from files
+     */
     @Override
     protected void loadImages() {
         up = new ImageIcon("media/pacman-up.gif").getImage();
@@ -25,28 +37,52 @@ public class Pacman extends Character {
         actual = right;
     }
 
+
+    /**
+     * Method used to respawn Pacman when is eaten
+     * @param mazeData array storing maze data
+     * @param FIELD_SIZE field size in pixels
+     * @param WIDTH maze width
+     */
     public void respawnPacman(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         setMoveVector(0, 0);
         countSpawnCoordinates(mazeData, FIELD_SIZE, WIDTH);
         decreaseLives();
     }
 
+    /**
+     * Method checking if Pacman is still alive
+     * @return is Pacman alive
+     */
     public Boolean isPacmanDead() {
         return getNumberOfLives() == 0;
     }
 
+    /**
+     * Method used to decrease number of Pacman lives
+     */
     private void decreaseLives() {
         numberOfLives--;
     }
 
+    /**
+     * @return number of lives
+     */
     public int getNumberOfLives() {
         return numberOfLives;
     }
 
+    /**
+     * @return actual Pacman image
+     */
     public Image getPacmanImage() {
         return pacmanImage;
     }
 
+    /**
+     * Method stopping Pacman move if hits blue wall
+     * @param mazeData array storing maze data
+     */
     private void stopPacmanIfMeetsWall(short[] mazeData) {
         int copyOfActualX = actualX + moveDX * PACMAN_SPEED;
         int copyOfActualY = actualY + moveDY * PACMAN_SPEED;
@@ -65,6 +101,12 @@ public class Pacman extends Character {
         }
     }
 
+    /**
+     * Method used to find pacman spawn place
+     * @param mazeData array storing maze data
+     * @param FIELD_SIZE field size in pixels
+     * @param WIDTH maze width
+     */
     @Override
     protected void countSpawnCoordinates(short[] mazeData, int FIELD_SIZE, int WIDTH) {
         int pacmanSpawnIndex = 0;
@@ -78,6 +120,11 @@ public class Pacman extends Character {
         actualY = cols * FIELD_SIZE;
     }
 
+    /**
+     * Method used to make move
+     * @param actualMoveVector actual move vector
+     * @param mazeData array storing maze data
+     */
     public void makeMove(int[] actualMoveVector, short[] mazeData) {
         if (actualMoveVector[0] == 0 && actualMoveVector[1] == -1) {
             if (isHorizontalMoveValid() && canMoveUp(mazeData)) {
@@ -108,6 +155,11 @@ public class Pacman extends Character {
         stopPacmanIfMeetsWall(mazeData);
     }
 
+    /**
+     * @param x horizontal coordinate of object
+     * @param y vertical coordinate of object
+     * @return is collision
+     */
     public Boolean isCollision(int x, int y) {
         int positionInMazeX = x / 30;
         int positionInMazeY = y / 30;
