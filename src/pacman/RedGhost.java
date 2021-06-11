@@ -51,7 +51,6 @@ public class RedGhost extends Ghost {
         @Override
         public void run() {
             super.run();
-//            System.out.println("Hello from orange");
             if (!isInHouse) {
                 evaluateNextMove(mazeData);
             }

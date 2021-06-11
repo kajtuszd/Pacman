@@ -200,7 +200,7 @@ public class Maze extends JPanel {
         pacman.makeMove(actualMoveVector, mazeData);
         BlueGhost.AI blueAI = blueGhost.new AI(mazeData, pacman.actualX, pacman.actualY);
         RedGhost.AI redAI = redGhost.new AI(mazeData, pacman.actualX, pacman.actualY);
-        PinkGhost.AI pinkAI = new PinkGhost.AI();
+        PinkGhost.AI pinkAI = pinkGhost.new AI(mazeData, pacman.actualX, pacman.actualY);
         OrangeGhost.AI orangeAI = orangeGhost.new AI(mazeData, pacman.actualX, pacman.actualY);
         blueAI.start();
         pinkAI.start();
