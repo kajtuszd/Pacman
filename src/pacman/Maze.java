@@ -27,6 +27,7 @@ public class Maze extends JPanel {
     public int[] actualMoveVector;
     public Boolean inGame;
     public Boolean onExit = false;
+    private Leaderboard leaderboard;
 
     /**
      * Maze constructor
@@ -48,6 +49,7 @@ public class Maze extends JPanel {
         actualMoveVector = new int[] {0, 0};
         inGame = false;
         score = 0;
+        leaderboard = new Leaderboard();
     }
 
     /**
