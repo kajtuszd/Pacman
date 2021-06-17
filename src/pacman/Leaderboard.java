@@ -9,6 +9,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Leaderboard class
+ */
 public class Leaderboard extends JFrame  {
 
     JLabel label;
@@ -21,10 +24,17 @@ public class Leaderboard extends JFrame  {
     private static int newHighscoreIndex;
 
 
+    /**
+     * Leaderboard constructor
+     * @param result latest game result
+     */
     public Leaderboard(int result) {
         setHighScore(result);
     }
 
+    /**
+     * Method displaying leaderboard window
+     */
     private void initializeLeaderboard() {
         button = new JButton("submit");
         LeaderboardConnector connector = new LeaderboardConnector();
@@ -43,6 +53,10 @@ public class Leaderboard extends JFrame  {
         setVisible(true);
     }
 
+    /**
+     * Method to create leaderboard text from processed data
+     * @return text with leaderboard to be displayed
+     */
     private String getHighscoreText() {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < 5; i++) {
@@ -51,6 +65,9 @@ public class Leaderboard extends JFrame  {
         return builder.toString();
     }
 
+    /**
+     * Method to create leaderboard file
+     */
     private void createLeaderboardFile() {
         File file = new File(leaderboardFile);
         if (!file.exists()) {
@@ -68,6 +85,9 @@ public class Leaderboard extends JFrame  {
         }
     }
 
+    /**
+     * Method to write leaderboard to a file
+     */
     private void writeLeaderboardToFile() {
         try {
             FileWriter writer = new FileWriter(leaderboardFile);
@@ -82,6 +102,9 @@ public class Leaderboard extends JFrame  {
         }
     }
 
+    /**
+     * Method to read leaderboard from file
+     */
     private void readFromLeaderboardFile() {
         try {
             File file = new File(leaderboardFile);
@@ -95,10 +118,19 @@ public class Leaderboard extends JFrame  {
         }
     }
 
+    /**
+     * Method to check if latest game result should be saved to leaderboard
+     * @param result latest game result
+     * @return is result a highscore
+     */
     private Boolean isHighScore(int result) {
         return result > scores[4];
     }
 
+    /**
+     * Method to set new highscore to leaderboard
+     * @param result latest game result
+     */
     public void setHighScore(int result) {
         if (isHighScore(result)) {
             initializeLeaderboard();
@@ -119,6 +151,10 @@ public class Leaderboard extends JFrame  {
         }
     }
 
+    /**
+     * Find new high score index
+     * @param result new high score index
+     */
     private void getNewHighscoreIndex(int result) {
         for(int i = 0; i < scores.length; i++) {
             if(scores[i] == result) {
@@ -127,8 +163,15 @@ public class Leaderboard extends JFrame  {
         }
     }
 
+    /**
+     * Action listener for dialog box
+     */
     private class LeaderboardConnector implements ActionListener {
 
+        /**
+         * Method to submit new high score
+         * @param e event used to recognize action
+         */
         @Override
         public void actionPerformed(ActionEvent e) {
             String s = e.getActionCommand();
