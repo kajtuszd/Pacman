@@ -49,7 +49,6 @@ public class Maze extends JPanel {
         actualMoveVector = new int[] {0, 0};
         inGame = false;
         score = 0;
-        leaderboard = new Leaderboard();
     }
 
     /**
@@ -347,6 +346,7 @@ public class Maze extends JPanel {
             } else if (pressedKey == KeyEvent.VK_SPACE && !onExit) {
                 inGame = true;
             } else if (pressedKey == KeyEvent.VK_SPACE) {
+                leaderboard = new Leaderboard(score);
                 onExit = false;
                 score = 0;
             }
