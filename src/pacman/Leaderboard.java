@@ -72,6 +72,7 @@ public class Leaderboard extends JFrame  {
         File file = new File(leaderboardFile);
         if (!file.exists()) {
             try {
+                file.getParentFile().mkdirs();
                 FileWriter writer = new FileWriter(leaderboardFile);
                 for (int i = 0; i < 4; i++) {
                     writer.write("............... 0 \n");
